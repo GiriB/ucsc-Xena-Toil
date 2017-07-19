@@ -40,9 +40,23 @@ def addColumn(fileName, columnList, header='UNK',sep='\t', EOL='\n'):
             os.system('rm -rf {}'.format(fileName+'.tmp'))
         except Exception as e:
             print(e)
-'''
-'''
-def getMapping(fileID):
-    #Given fileID return Submitter Specimien ID from mappings.tsv
-    for i in open('mappings.tsv')
 
+
+fileIdToSpecimenIdMapping = {}
+with open('mappings.tsv') as f:
+    #Ignore first line
+    f.next()
+    for line in f:
+        fileId,SpecimenId,gnosId = line.strip().split()
+        fileIdToSpecimenIdMapping[fileId] = SpecimenId
+
+
+'''
+Returns SpecimenId for a given FileId
+'''
+def getMapping(fileId):
+    #Given fileId return Submitter Specimien ID from mappings.tsv
+    try:
+        return fileIdToSpecimenIdMapping[fileId]
+    except Exception as e:
+        print("ERROR: ",e)
