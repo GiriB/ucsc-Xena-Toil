@@ -1,3 +1,6 @@
+"""
+Extracts FileID,gnosID,SpecimenID values from manifest downloaded from file-browser 
+"""
 import pandas as pd
 
 #We need sample info to get fileName,id,gnosId

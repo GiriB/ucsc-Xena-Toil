@@ -6,6 +6,7 @@ import os, glob
 Add a column to end of a file. If the file does not exist, it is created. 
 fileName - Name of the file 
 columnList - list of values to be inserted
+headersList - list of headers for each column
 sep - column separator; default - tab 
 EOL - End Of Line; default - newline 
 '''
@@ -41,6 +42,14 @@ def addColumn(fileName, columnList, header='UNK',sep='\t', EOL='\n'):
         except Exception as e:
             print(e)
 
+'''
+Similat to addColumn - but adds several columns at once.
+fileName - Name of the file 
+columnList - list of values to be inserted
+headersList - list of headers for each column
+sep - column separator; default - tab 
+EOL - End Of Line; default - newline 
+'''
 def addColumns(fileName, columnsList, headersList,sep='\t', EOL='\n'):
     # The number of headers and the columns shouldbe equal 
     print("INSIDE")
@@ -93,7 +102,6 @@ with open('mappings.tsv') as f:
     for line in f:
         fileId,SpecimenId,gnosId = line.strip().split()
         fileIdToSpecimenIdMapping[fileId] = SpecimenId
-
 
 '''
 Returns SpecimenId for a given FileId

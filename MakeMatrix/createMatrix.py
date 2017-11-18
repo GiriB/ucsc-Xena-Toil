@@ -4,16 +4,16 @@ import glob, sys, os
 import pandas as pd
 from util import addColumns, getMapping
 
-OUTPUT_DIR = '/Users/Apple/workspace/ucsc/output' #'/home/ec2-user/efs/code/outputs'
+OUTPUT_DIR =  '/home/ec2-user/efs/code/outputs'
 OUTPUT_MATRIX_FOLDER = './output'
-CHUNK_SIZE = 1
+CHUNK_SIZE = 50
 
 cfg = open('makematrix.cfg','r')
 cfg_data = cfg.readlines()
 cfg.close()
 
 #We need sample info to get fileName,id,gnosId
-samples = pd.read_csv('../test_samples.txt',sep='\t')
+samples = pd.read_csv('../samples.txt',sep=' ')
 
 for param_config in cfg_data:
     '''
@@ -33,7 +33,7 @@ for param_config in cfg_data:
    
     # For each sample find the param file and extract the appropriate column 
     for row_ind, row in enumerate(samples.values):
-        print("GIRI")
+        print("RUN: sample#",row_ind)
         #print(row)
         sample_filename,sample_id,sample_gnosid = row
 
@@ -74,7 +74,7 @@ for param_config in cfg_data:
                 # col is a Pandas series object
                 # col.set_value(0,sample_gnosid)
                 # If we have reac CHUNK or we have reached the last index 
-                print(type(samples.values))
+                #print(type(samples.values))
                 if count == CHUNK_SIZE or row_ind == len(samples.values)-1:
                     addColumns('{}/{}_mat.tsv'.format(OUTPUT_MATRIX_FOLDER,param),cols_chunk,headers_chunk, sep='\t')
                     count = 0
@@ -85,7 +85,7 @@ for param_config in cfg_data:
                     
                # print(sys.getsizeof(df))
             except Exception as e:
-                print("ERROR: {} does not contain {} header.".format(sample_param_file,param))
-                print(e)
+                sys.stderr.write("ERROR: {} does not contain {} header.".format(sample_param_file,param)+ '\n')
+                sys.stderr.write(e+'\n')
         else:
-            print('ERROR: File does not exist :',sample_param_file )
+            sys.stderr.write('ERROR: File does not exist : ' + sample_param_file + '\n')
